@@ -5,18 +5,20 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>CounterApi</RootNamespace>
-        <ContainerImageName>counter-api</ContainerImageName>
+        <ContainerImageName>ghcr.io/thangchung/coffeeshop-dapr-workflow/counter-api</ContainerImageName>
         <ContainerImageTag>latest</ContainerImageTag>
+        <ContainerRegistry>ghcr.io</ContainerRegistry>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Build.Containers"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
         <PackageReference Include="Microsoft.OpenApi"/>
-        <PackageReference Include="MiniValidation"/>
         <PackageReference Include="Swashbuckle.AspNetCore"/>
         <PackageReference Include="MediatR"/>
         <PackageReference Include="FluentValidation.AspNetCore"/>
         <PackageReference Include="Dapr.AspNetCore"/>
+        <PackageReference Include="Dapr.Workflow"/>
     </ItemGroup>
 
     <ItemGroup>

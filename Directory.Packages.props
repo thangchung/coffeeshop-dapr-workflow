@@ -8,7 +8,6 @@
         <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-preview.6.23329.4"/>
         <PackageVersion Include="Microsoft.NET.Build.Containers" Version="8.0.100-preview.6.23330.7"/>
         <PackageVersion Include="Microsoft.OpenApi" Version="1.6.5"/>
-        <PackageVersion Include="MiniValidation" Version="0.8.0"/>
         <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
         <PackageVersion Include="Yarp.ReverseProxy" Version="2.0.1"/>
         <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.0-preview.6.23329.7"/>
