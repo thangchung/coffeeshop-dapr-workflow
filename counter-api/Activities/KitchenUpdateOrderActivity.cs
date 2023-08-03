@@ -24,7 +24,7 @@ public class KitchenUpdateOrderActivity(DaprClient daprClient, ILogger<BaristaUp
                 logger.LogInformation("Order is {OrderId}, updated KitchenOrderItem={KitchenOrderItemId}", input.OrderId,
                     lineItem.ItemLineId);
 
-                _ = orderState.Value.Apply(new OrderUp(lineItem.ItemLineId));
+                orderState.Value = orderState.Value.Apply(new OrderUp(lineItem.ItemLineId));
             }
 
             await orderState.SaveAsync();

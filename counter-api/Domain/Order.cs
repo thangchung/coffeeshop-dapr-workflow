@@ -6,18 +6,27 @@ using CounterApi.Domain.SharedKernel;
 
 namespace CounterApi.Domain;
 
-public class Order(OrderSource orderSource, Guid loyaltyMemberId, OrderStatus orderStatus, Location location)
+public class Order
 {
     [JsonIgnore]
     public HashSet<IDomainEvent> DomainEvents { get; private set; } = new HashSet<IDomainEvent>();
+    
     public Guid Id { get; set; } = Guid.NewGuid();
-    public OrderSource OrderSource => orderSource;
-    public Guid LoyaltyMemberId => loyaltyMemberId;
-    public OrderStatus OrderStatus { get; set; } = orderStatus;
-    public Location Location => location;
-    public List<LineItem> LineItems { get; } = new();
-    public DateTime Created { get; } = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
-    public DateTime? Updated { get; }
+    public OrderSource OrderSource { get; set; }
+    public Guid LoyaltyMemberId { get; set; }
+    public OrderStatus OrderStatus { get; set; }
+    public Location Location { get; set; }
+    public List<LineItem> LineItems { get; set; } = new();
+    public DateTime Created { get; set; } = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+    public DateTime? Updated { get; set; }
+
+    private Order(OrderSource orderSource, Guid loyaltyMemberId, OrderStatus orderStatus, Location location)
+    {
+        OrderSource = orderSource;
+        LoyaltyMemberId = loyaltyMemberId;
+        OrderStatus = orderStatus;
+        Location = location;
+    }
 
     public void AddDomainEvent(IDomainEvent eventItem)
     {
@@ -92,12 +101,25 @@ public class Order(OrderSource orderSource, Guid loyaltyMemberId, OrderStatus or
     }
 }
 
-public class LineItem(ItemType itemType, string name, decimal price, ItemStatus itemStatus, bool isBarista)
+public class LineItem
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public ItemType ItemType => itemType;
-    public string Name => name;
-    public decimal Price => price;
-    public ItemStatus ItemStatus { get; set; } = itemStatus;
-    public bool IsBaristaOrder => isBarista;
+    public ItemType ItemType { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public ItemStatus ItemStatus { get; set; }
+    public bool IsBaristaOrder { get; set; }
+
+    public LineItem()
+    {
+    }
+
+    public LineItem(ItemType itemType, string name, decimal price, ItemStatus itemStatus, bool isBarista)
+    {
+        ItemType = itemType;
+        Name = name;
+        Price = price;
+        ItemStatus = itemStatus;
+        IsBaristaOrder = isBarista;
+    }
 }

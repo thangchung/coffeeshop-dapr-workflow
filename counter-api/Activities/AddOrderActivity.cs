@@ -9,6 +9,8 @@ using CounterApi.Workflows;
 using Dapr.Client;
 using Dapr.Workflow;
 
+using Newtonsoft.Json;
+
 namespace CounterApi.Activities;
 
 public class AddOrderActivity(DaprClient daprClient, IItemGateway itemGateway, ILoggerFactory loggerFactory)
@@ -18,14 +20,19 @@ public class AddOrderActivity(DaprClient daprClient, IItemGateway itemGateway, I
 
     public override async Task<PlaceOrderResult?> RunAsync(WorkflowActivityContext context, PlaceOrderCommand input)
     {
+        _logger.LogInformation("[AddOrderActivity] input={AddOrderActivity-input}", JsonConvert.SerializeObject(input));
+
         var orderId = context.InstanceId;
 
         _logger.LogInformation("Run AddOrderActivity with orderId={orderId}", orderId);
 
         var order = await Order.From(input, itemGateway);
         order.Id = new Guid(orderId); //todo: not good
+        _logger.LogInformation("Order={order}", JsonConvert.SerializeObject(order));
 
-        await daprClient.SaveStateAsync("statestore", $"order-{order.Id}", order);
+        // await daprClient.SaveStateAsync("statestore", $"order-{order.Id}", order);
+        await daprClient.SaveStateAsync("statestore", $"order-{order.Id}",
+            new OrderDto { Id = order.Id, OrderStatus = OrderStatus.IN_PROGRESS });
 
         var @events = new IDomainEvent[order.DomainEvents.Count];
         order.DomainEvents.CopyTo(@events);

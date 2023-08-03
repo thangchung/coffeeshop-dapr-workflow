@@ -1,6 +1,6 @@
-using System.Text.Json;
 using FluentValidation;
-using BaristaApi.UseCases;
+
+using ProductApi.UseCases;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,13 +11,6 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDaprClient();
-builder.Services.AddSingleton(new JsonSerializerOptions()
-{
-    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-    PropertyNameCaseInsensitive = true,
-});
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -26,11 +19,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseRouting();
-app.UseCloudEvents();
-
 app.Map("/", () => Results.Redirect("/swagger"));
 
-_ = app.MapOrderUpApiRoutes();
+_ = app.MapItemTypesQueryApiRoutes()
+    .MapItemsByIdsQueryApiRoutes();
 
 app.Run();
