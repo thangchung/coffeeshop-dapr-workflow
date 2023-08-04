@@ -34,7 +34,7 @@ run-barista-dapr:
 
 run-kitchen-dapr:
 	dapr run \
-    --app-id kitchenaapi \
+    --app-id kitchenapi \
     --app-port 5004 \
     --resources-path components \
     --config components/daprConfig.yaml \

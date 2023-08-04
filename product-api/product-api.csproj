@@ -5,13 +5,12 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RootNamespace>ProductApi</RootNamespace>
-		<ContainerImageName>ghcr.io/thangchung/coffeeshop-dapr-workflow/product-api</ContainerImageName>
+		<ContainerRepository>coffeeshop-dapr-workflow/product-api</ContainerRepository>
 		<ContainerImageTag>latest</ContainerImageTag>
 		<ContainerRegistry>ghcr.io</ContainerRegistry>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.NET.Build.Containers"/>
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
 		<PackageReference Include="Microsoft.OpenApi"/>
 		<PackageReference Include="Swashbuckle.AspNetCore"/>

@@ -33,24 +33,25 @@ public class PlaceOrderWorkflow : Workflow<PlaceOrderCommand, PlaceOrderWorkflow
                 context.SetCustomStatus("Waiting for barista & kitchen events");
                 var baristaOrderUpdatedEvent = context.WaitForExternalEventAsync<BaristaOrderUpdated>(
                     eventName: "BaristaOrderUpdated",
-                    timeout: TimeSpan.FromSeconds(15));
+                    timeout: TimeSpan.FromSeconds(30));
 
                 var kitchenOrderUpdatedEvent = context.WaitForExternalEventAsync<KitchenOrderUpdated>(
                     eventName: "KitchenOrderUpdated",
-                    timeout: TimeSpan.FromSeconds(15));
+                    timeout: TimeSpan.FromSeconds(30));
 
                 await Task.WhenAll(baristaOrderUpdatedEvent, kitchenOrderUpdatedEvent);
 
                 var baristaOrderUpdatedResult = await baristaOrderUpdatedEvent;
                 var kitchenOrderUpdatedResult = await kitchenOrderUpdatedEvent;
 
-                await context.CallActivityAsync(
-                    nameof(BaristaUpdateOrderActivity),
-                    baristaOrderUpdatedResult);
+                // merge items
+                foreach(var temp in kitchenOrderUpdatedResult.ItemLines) {
+                    baristaOrderUpdatedResult.ItemLines.Add(temp);
+                }
 
                 await context.CallActivityAsync(
-                    nameof(KitchenUpdateOrderActivity),
-                    kitchenOrderUpdatedResult);
+                    nameof(UpdateOrderActivity),
+                    baristaOrderUpdatedResult);
 
                 await context.CallActivityAsync(
                     nameof(NotifyActivity),

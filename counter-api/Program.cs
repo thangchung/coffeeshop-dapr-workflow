@@ -16,8 +16,7 @@ builder.Services.AddDaprWorkflow(options =>
 
     options.RegisterActivity<NotifyActivity>();
     options.RegisterActivity<AddOrderActivity>();
-    options.RegisterActivity<BaristaUpdateOrderActivity>();
-    options.RegisterActivity<KitchenUpdateOrderActivity>();
+    options.RegisterActivity<UpdateOrderActivity>();
 });
 
 builder.Services.AddHttpContextAccessor();
@@ -50,6 +49,7 @@ app.UseCloudEvents();
 app.Map("/", () => Results.Redirect("/swagger"));
 
 _ = app.MapOrderInApiRoutes()
-    .MapOrderUpApiRoutes();
+    .MapOrderUpApiRoutes()
+    .MapOrderFulfillmentApiRoutes();
 
 app.Run();

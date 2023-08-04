@@ -20,19 +20,36 @@ public class AddOrderActivity(DaprClient daprClient, IItemGateway itemGateway, I
 
     public override async Task<PlaceOrderResult?> RunAsync(WorkflowActivityContext context, PlaceOrderCommand input)
     {
-        _logger.LogInformation("[AddOrderActivity] input={AddOrderActivity-input}", JsonConvert.SerializeObject(input));
+        ArgumentNullException.ThrowIfNull(context);
+        ArgumentNullException.ThrowIfNull(input);
 
+        _logger.LogInformation("[AddOrderActivity] input={AddOrderActivity-input}", JsonConvert.SerializeObject(input));
         var orderId = context.InstanceId;
 
         _logger.LogInformation("Run AddOrderActivity with orderId={orderId}", orderId);
-
         var order = await Order.From(input, itemGateway);
         order.Id = new Guid(orderId); //todo: not good
         _logger.LogInformation("Order={order}", JsonConvert.SerializeObject(order));
 
-        // await daprClient.SaveStateAsync("statestore", $"order-{order.Id}", order);
-        await daprClient.SaveStateAsync("statestore", $"order-{order.Id}",
-            new OrderDto { Id = order.Id, OrderStatus = OrderStatus.IN_PROGRESS });
+        // map domain object to dto
+        var dto = Order.ToDto(order);
+        dto.OrderStatus = OrderStatus.IN_PROGRESS;
+
+        await daprClient.SaveStateAsync("statestore", $"order-{order.Id}", dto);
+
+        // save the order list
+        var orderListState = await daprClient.GetStateEntryAsync<List<Guid>>("statestore", "order-list");
+        if (orderListState.Value == null)
+        {
+            await daprClient.SaveStateAsync("statestore", "order-list", new List<Guid> { order.Id });
+            _logger.LogInformation("orderListState inserted");
+        }
+        else
+        {
+            orderListState.Value.Add(order.Id);
+            var result = await orderListState.TrySaveAsync();
+            _logger.LogInformation("orderListState updated = {IsSucceed}", result);
+        }
 
         var @events = new IDomainEvent[order.DomainEvents.Count];
         order.DomainEvents.CopyTo(@events);
@@ -50,16 +67,16 @@ public class AddOrderActivity(DaprClient daprClient, IItemGateway itemGateway, I
                         baristaEvents.Add(baristaOrderInEvent.OrderId, new BaristaOrderPlaced
                         {
                             OrderId = baristaOrderInEvent.OrderId,
-                            ItemLines = new List<OrderItemDto>
+                            ItemLines = new List<OrderItemLineDto>
                             {
-                                new(baristaOrderInEvent.ItemLineId, baristaOrderInEvent.ItemType)
+                                new(baristaOrderInEvent.ItemLineId, baristaOrderInEvent.ItemType, ItemStatus.IN_PROGRESS)
                             }
                         });
                     }
                     else
                     {
                         baristaEvents[baristaOrderInEvent.OrderId].ItemLines.Add(
-                            new OrderItemDto(baristaOrderInEvent.ItemLineId, baristaOrderInEvent.ItemType));
+                            new OrderItemLineDto(baristaOrderInEvent.ItemLineId, baristaOrderInEvent.ItemType, ItemStatus.IN_PROGRESS));
                     }
 
                     break;
@@ -69,16 +86,16 @@ public class AddOrderActivity(DaprClient daprClient, IItemGateway itemGateway, I
                         kitchenEvents.Add(kitchenOrderInEvent.OrderId, new KitchenOrderPlaced
                         {
                             OrderId = kitchenOrderInEvent.OrderId,
-                            ItemLines = new List<OrderItemDto>
+                            ItemLines = new List<OrderItemLineDto>
                             {
-                                new(kitchenOrderInEvent.ItemLineId, kitchenOrderInEvent.ItemType)
+                                new(kitchenOrderInEvent.ItemLineId, kitchenOrderInEvent.ItemType, ItemStatus.IN_PROGRESS)
                             }
                         });
                     }
                     else
                     {
                         kitchenEvents[kitchenOrderInEvent.OrderId].ItemLines.Add(
-                            new OrderItemDto(kitchenOrderInEvent.ItemLineId, kitchenOrderInEvent.ItemType));
+                            new OrderItemLineDto(kitchenOrderInEvent.ItemLineId, kitchenOrderInEvent.ItemType, ItemStatus.IN_PROGRESS));
                     }
 
                     break;

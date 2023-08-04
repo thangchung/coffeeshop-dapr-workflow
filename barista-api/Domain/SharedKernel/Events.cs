@@ -2,6 +2,6 @@ using MediatR;
 
 namespace BaristaApi.Domain.SharedKernel;
 
-public interface IDomainEvent : INotification
-{
-}
+// public interface IDomainEvent : INotification
+// {
+// }

@@ -40,42 +40,55 @@ public class PlaceKitchenOrderCommandHandler(DaprClient daprClient, ILogger<Plac
 
         _logger.LogInformation("Order info: {OrderInfo}", JsonConvert.SerializeObject(request));
 
+        var message = new KitchenOrderUpdated
+        {
+            OrderId = request.OrderId
+        };
 
         foreach (var itemLine in request.ItemLines)
         {
-            var kitchenOrder = KitchenOrder.From(request.OrderId, itemLine.ItemType, DateTime.UtcNow);
+            // var kitchenOrder = KitchenOrder.From(request.OrderId, itemLine.ItemType, DateTime.UtcNow);
 
             await Task.Delay(CalculateDelay(itemLine.ItemType), cancellationToken);
 
-            var kitchenItemState = kitchenOrder.SetTimeUp(itemLine.ItemLineId, DateTime.UtcNow);
+            // var kitchenItemState = kitchenOrder.SetTimeUp(itemLine.ItemLineId, DateTime.UtcNow);
 
-            await daprClient.SaveStateAsync("statestore", $"order-{request.OrderId}", kitchenItemState, cancellationToken: cancellationToken);
+            // await daprClient.SaveStateAsync("statestore", $"order-{request.OrderId}", kitchenItemState, cancellationToken: cancellationToken);
+            await daprClient.SaveStateAsync("statestore", $"order-{request.OrderId}", request, cancellationToken: cancellationToken);
 
-            if (kitchenItemState.DomainEvents is not null)
-            {
-                var @events = new IDomainEvent[kitchenItemState.DomainEvents.Count];
-                kitchenItemState.DomainEvents.CopyTo(@events);
-                kitchenItemState.DomainEvents.Clear();
+            message.ItemLines.Add(new OrderItemDto(itemLine.ItemLineId, itemLine.ItemType));
 
-                var message = new KitchenOrderUpdated
-                {
-                    OrderId = request.OrderId
-                };
-                foreach (var @event in @events)
-                {
-                    if (@event is KitchenOrderUp kitchenOrderUp)
-                    {
-                        message.ItemLines.Add(new OrderItemDto(kitchenOrderUp.ItemLineId, kitchenOrderUp.ItemType));
-                    }
-                }
+            // if (kitchenItemState.DomainEvents is not null)
+            // {
+            //     var @events = new IDomainEvent[kitchenItemState.DomainEvents.Count];
+            //     kitchenItemState.DomainEvents.CopyTo(@events);
+            //     kitchenItemState.DomainEvents.Clear();
 
-                await daprClient.PublishEventAsync(
+            //     var message = new KitchenOrderUpdated
+            //     {
+            //         OrderId = request.OrderId
+            //     };
+            //     foreach (var @event in @events)
+            //     {
+            //         if (@event is KitchenOrderUp kitchenOrderUp)
+            //         {
+            //             message.ItemLines.Add(new OrderItemDto(kitchenOrderUp.ItemLineId, kitchenOrderUp.ItemType));
+            //         }
+            //     }
+
+            //     await daprClient.PublishEventAsync(
+            //                 "kitchenpubsub",
+            //                 "kitchenorderupdated",
+            //                 message,
+            //                 cancellationToken);
+            // }
+        }
+
+        await daprClient.PublishEventAsync(
                             "kitchenpubsub",
                             "kitchenorderupdated",
                             message,
                             cancellationToken);
-            }
-        }
 
         return Results.Ok();
     }

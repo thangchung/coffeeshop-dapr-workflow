@@ -5,8 +5,11 @@ using BaristaApi.Domain.Messages;
 using BaristaApi.Domain.SharedKernel;
 
 using Dapr.Client;
+
 using FluentValidation;
+
 using MediatR;
+
 using Newtonsoft.Json;
 
 namespace BaristaApi.UseCases;
@@ -38,40 +41,55 @@ internal class PlaceBaristaOrderCommandHandler(DaprClient daprClient, ILogger<Pl
 
         logger.LogInformation("Order info: {OrderInfo}", JsonConvert.SerializeObject(request));
 
+        var message = new BaristaOrderUpdated
+        {
+            OrderId = request.OrderId
+        };
+
         foreach (var itemLine in request.ItemLines)
         {
-            var baristaItem = BaristaItem.From(itemLine.ItemType, itemLine.ItemType.ToString(), DateTime.UtcNow);
+            // var baristaItem = BaristaItem.From(itemLine.ItemType, itemLine.ItemType.ToString(), DateTime.UtcNow);
 
             await Task.Delay(CalculateDelay(itemLine.ItemType), cancellationToken);
 
-            var baristaItemState = baristaItem.SetTimeUp(request.OrderId, itemLine.ItemLineId, DateTime.UtcNow);
+            // var baristaItemState = baristaItem.SetTimeUp(request.OrderId, itemLine.ItemLineId, DateTime.UtcNow);
 
-            await daprClient.SaveStateAsync("statestore", $"order-{request.OrderId}", baristaItemState, cancellationToken: cancellationToken);
+            // await daprClient.SaveStateAsync("statestore", $"order-{request.OrderId}", baristaItemState, cancellationToken: cancellationToken);
+            await daprClient.SaveStateAsync("statestore", $"order-{request.OrderId}", request, cancellationToken: cancellationToken);
 
-            if (baristaItemState.DomainEvents is not null)
-            {
-                var @events = new IDomainEvent[baristaItemState.DomainEvents.Count];
-                baristaItemState.DomainEvents.CopyTo(@events);
-                baristaItemState.DomainEvents.Clear();
+            message.ItemLines.Add(new OrderItemDto(itemLine.ItemLineId, itemLine.ItemType));
 
-                var message = new BaristaOrderUpdated
-                {
-                    OrderId = request.OrderId
-                };
-                foreach (var @event in @events)
-                {
-                    if (@event is BaristaOrderUp baristaOrderUp) {
-                        message.ItemLines.Add(new OrderItemDto(baristaOrderUp.ItemLineId, baristaOrderUp.ItemType));
-                    }
-                }
+            // if (baristaItemState.DomainEvents is not null)
+            // {
+            //     var @events = new IDomainEvent[baristaItemState.DomainEvents.Count];
+            //     baristaItemState.DomainEvents.CopyTo(@events);
+            //     baristaItemState.DomainEvents.Clear();
 
-                await daprClient.PublishEventAsync(
+            //     var message = new BaristaOrderUpdated
+            //     {
+            //         OrderId = request.OrderId
+            //     };
+            //     foreach (var @event in @events)
+            //     {
+            //         if (@event is BaristaOrderUp baristaOrderUp)
+            //         {
+            //             message.ItemLines.Add(new OrderItemDto(baristaOrderUp.ItemLineId, baristaOrderUp.ItemType));
+            //         }
+            //     }
+
+            //     await daprClient.PublishEventAsync(
+            //                 "baristapubsub",
+            //                 "baristaorderupdated",
+            //                 message,
+            //                 cancellationToken);
+            // }
+        }
+
+        await daprClient.PublishEventAsync(
                             "baristapubsub",
                             "baristaorderupdated",
                             message,
                             cancellationToken);
-            }
-        }
 
         return Results.Ok();
     }

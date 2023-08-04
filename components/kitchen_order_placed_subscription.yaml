@@ -6,3 +6,6 @@ spec:
   topic: kitchenorderplaced
   route: /dapr_subscribe_KitchenOrdered
   pubsubname: kitchenpubsub
+scopes:
+  - kitchenapi
+  - counterapi

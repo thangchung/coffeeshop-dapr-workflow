@@ -27,7 +27,7 @@ public static class OrderUpRouteMapper
     }
 }
 
-public record OrderUpdatedCommand(Guid OrderId, List<OrderItemDto> ItemLines, bool IsBarista = true) : IRequest<IResult>;
+public record OrderUpdatedCommand(Guid OrderId, List<OrderItemLineDto> ItemLines, bool IsBarista = true) : IRequest<IResult>;
 
 internal class OrderUpdatedCommandValidator : AbstractValidator<OrderUpdatedCommand>
 {
