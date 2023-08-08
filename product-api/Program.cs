@@ -1,5 +1,6 @@
 using FluentValidation;
 
+using ProductApi.Extensions;
 using ProductApi.UseCases;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//builder.AddOpenTelemetry();
 
 var app = builder.Build();
 

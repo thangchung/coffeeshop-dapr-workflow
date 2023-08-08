@@ -1,6 +1,7 @@
 using System.Text.Json;
 using FluentValidation;
 using BaristaApi.UseCases;
+using BaristaApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions()
     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
     PropertyNameCaseInsensitive = true,
 });
+
+//builder.AddOpenTelemetry();
 
 var app = builder.Build();
 

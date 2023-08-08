@@ -1,11 +1,12 @@
+@product_host = http://localhost:5001
 @host = http://localhost:5002
 
 ###
-GET {{host}}/product/v1/api/item-types HTTP/1.1
+GET {{product_host}}/v1/api/item-types HTTP/1.1
 content-type: application/json
 
 ###
-GET {{host}}/product/v1/api/items-by-types/1,2,3 HTTP/1.1
+GET {{product_host}}/v1/api/items-by-types/1,2,3 HTTP/1.1
 content-type: application/json
 
 ###

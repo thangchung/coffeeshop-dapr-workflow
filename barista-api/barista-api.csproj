@@ -1,13 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
 		<RootNamespace>BaristaApi</RootNamespace>
-		<ContainerImageName>ghcr.io/thangchung/coffeeshop-dapr-workflow/barista-api</ContainerImageName>
+		<ContainerRepository>barista-api</ContainerRepository>
 		<ContainerImageTag>latest</ContainerImageTag>
-		<ContainerRegistry>ghcr.io</ContainerRegistry>
 	</PropertyGroup>
 
 	<ItemGroup>

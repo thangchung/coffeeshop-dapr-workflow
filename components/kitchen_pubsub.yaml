@@ -12,5 +12,5 @@ spec:
   - name: redisPassword
     value: ""
 scopes:
-  - kitchenapi
-  - counterapi
+  - kitchen-api
+  - counter-api

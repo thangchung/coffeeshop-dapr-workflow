@@ -1,0 +1,163 @@
+version: "3.4"
+
+x-common-variables: &common-variables
+  ASPNETCORE_ENVIRONMENT: Development
+
+services:
+  product-api:
+    image: ${DOCKER_REGISTRY:-ghcr.io/thangchung/coffeeshop-dapr-workflow}/product-api:${IMAGE_TAG:-latest}
+    container_name: product-api
+    environment:
+      <<: *common-variables
+      ASPNETCORE_URLS: http://+:5001
+      ApplicationName: "product-api"
+    ports:
+      - "5001:5001"
+    pull_policy: if_not_present
+    restart: always
+    networks:
+      - coffeeshop-network
+
+  product-api-dapr:
+    image: "daprio/daprd:1.11.2"
+    command: ["./daprd",
+     "-app-id", "product-api",
+     "-app-port", "5001",
+     "-placement-host-address", "placement:50006",
+     "-config", "/components/daprConfig.yaml",
+     "-resources-path", "/components",
+     "-log-level","debug"]
+    volumes:
+      - "./components-docker/:/components"
+    depends_on:
+      - product-api
+    restart: always
+    network_mode: "service:product-api"
+  
+  counter-api:
+    image: ${DOCKER_REGISTRY:-ghcr.io/thangchung/coffeeshop-dapr-workflow}/counter-api:${IMAGE_TAG:-latest}
+    container_name: counter-api
+    environment:
+      <<: *common-variables
+      ASPNETCORE_URLS: http://+:5002
+      ApplicationName: "counter-api"
+      ProductCatalogAppDaprName: product-api
+      DAPR_GRPC_PORT: 4001
+    ports:
+      - "5002:5002"
+    depends_on:
+      - product-api
+    pull_policy: if_not_present
+    restart: always
+    networks:
+      - coffeeshop-network
+  counter-api-dapr:
+    image: "daprio/daprd:1.11.2"
+    command: ["./daprd",
+     "-app-id", "counter-api",
+     "-app-port", "5002",
+     "-placement-host-address", "placement:50006",
+     "-dapr-grpc-port", "4001",
+     "-config", "/components/daprConfig.yaml",
+     "-resources-path", "/components",
+     "-log-level","debug"]
+    volumes:
+      - "./components-docker/:/components"
+    depends_on:
+      - counter-api
+    restart: always
+    network_mode: "service:counter-api"
+
+  barista-api:
+    image: ${DOCKER_REGISTRY:-ghcr.io/thangchung/coffeeshop-dapr-workflow}/barista-api:${IMAGE_TAG:-latest}
+    container_name: barista-api
+    environment:
+      <<: *common-variables
+      ASPNETCORE_URLS: http://+:5003
+      ApplicationName: "barista-api"
+    ports:
+      - "5003:5003"
+    pull_policy: if_not_present
+    restart: always
+    networks:
+      - coffeeshop-network
+
+  barista-api-dapr:
+    image: "daprio/daprd:1.11.2"
+    command: ["./daprd",
+     "-app-id", "barista-api",
+     "-app-port", "5003",
+     "-placement-host-address", "placement:50006",
+     "-config", "/components/daprConfig.yaml",
+     "-resources-path", "/components",
+     "-log-level","debug"]
+    volumes:
+      - "./components-docker/:/components"
+    depends_on:
+      - barista-api
+    restart: always
+    network_mode: "service:barista-api"
+
+  kitchen-api:
+    image: ${DOCKER_REGISTRY:-ghcr.io/thangchung/coffeeshop-dapr-workflow}/kitchen-api:${IMAGE_TAG:-latest}
+    container_name: kitchen-api
+    environment:
+      <<: *common-variables
+      ASPNETCORE_URLS: http://+:5004
+      ApplicationName: "kitchen-api"
+    ports:
+      - "5004:5004"
+    pull_policy: if_not_present
+    restart: always
+    networks:
+      - coffeeshop-network
+
+  kitchen-api-dapr:
+    image: "daprio/daprd:1.11.2"
+    command: ["./daprd",
+     "-app-id", "kitchen-api",
+     "-app-port", "5004",
+     "-placement-host-address", "placement:50006",
+     "-config", "/components/daprConfig.yaml",
+     "-resources-path", "/components",
+     "-log-level","debug"]
+    volumes:
+      - "./components-docker/:/components"
+    depends_on:
+      - kitchen-api
+    restart: always
+    network_mode: "service:kitchen-api"
+
+  ############################
+  # Dapr placement service
+  ############################
+  placement:
+    image: "daprio/dapr:1.11.2"
+    command: ["./placement", "-port", "50006"]
+    ports:
+      - "50006:50006"
+    networks:
+      - coffeeshop-network
+  ############################
+  # Redis state store
+  ############################
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    networks:
+      - coffeeshop-network
+
+  ############################
+  # Zipkin component
+  ############################
+  zipkin:
+    image: openzipkin/zipkin:latest
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - coffeeshop-network
+
+networks:
+  coffeeshop-network:

@@ -3,7 +3,7 @@ export
 
 run-product-dapr:
 	dapr run \
-    --app-id productapi \
+    --app-id product-api \
     --app-port 5001 \
     --resources-path components \
     --config components/daprConfig.yaml \
@@ -13,7 +13,7 @@ run-product-dapr:
 
 run-counter-dapr:
 	dapr run \
-    --app-id counterapi \
+    --app-id counter-api \
     --app-port 5002 \
     --dapr-http-port 54321 \
     --resources-path components \
@@ -24,7 +24,7 @@ run-counter-dapr:
 
 run-barista-dapr:
 	dapr run \
-    --app-id baristaapi \
+    --app-id barista-api \
     --app-port 5003 \
     --resources-path components \
     --config components/daprConfig.yaml \
@@ -34,7 +34,7 @@ run-barista-dapr:
 
 run-kitchen-dapr:
 	dapr run \
-    --app-id kitchenapi \
+    --app-id kitchen-api \
     --app-port 5004 \
     --resources-path components \
     --config components/daprConfig.yaml \

@@ -4,6 +4,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-	<LangVersion>preview</LangVersion>
+	  <LangVersion>preview</LangVersion>
   </PropertyGroup>
 </Project>

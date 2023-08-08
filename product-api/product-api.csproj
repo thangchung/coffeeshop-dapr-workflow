@@ -1,13 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
 		<RootNamespace>ProductApi</RootNamespace>
-		<ContainerRepository>coffeeshop-dapr-workflow/product-api</ContainerRepository>
+		<ContainerRepository>product-api</ContainerRepository>
 		<ContainerImageTag>latest</ContainerImageTag>
-		<ContainerRegistry>ghcr.io</ContainerRegistry>
 	</PropertyGroup>
 
 	<ItemGroup>
