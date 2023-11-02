@@ -83,7 +83,7 @@ public class PlaceOrderWorkflow : Workflow<PlaceOrderCommand, PlaceOrderWorkflow
                     retryOptions);
 
                 context.SetCustomStatus(
-                    "Stopped order process due to time-out when called to barista & kitchen actions.");
+                    "[TaskCanceledException] Stopped order process due to time-out when called to barista & kitchen actions.");
 
                 return new PlaceOrderWorkflowResult(Success: false);
             }
@@ -99,7 +99,7 @@ public class PlaceOrderWorkflow : Workflow<PlaceOrderCommand, PlaceOrderWorkflow
                         new Notification($"Failed: order {context.InstanceId} (refund money)"),
                         retryOptions);
 
-                    context.SetCustomStatus("Stopped order process due to error in update actions.");
+                    context.SetCustomStatus("[Exception] Stopped order process due to error in update actions.");
 
                     return new PlaceOrderWorkflowResult(Success: false);
                 }
