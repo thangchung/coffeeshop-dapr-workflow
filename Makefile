@@ -1,43 +1,29 @@
 include .env
 export
 
-run-product-dapr:
-	dapr run \
-    --app-id product-api \
-    --app-port 5001 \
-    --resources-path components \
-    --config components/daprConfig.yaml \
-    -- dotnet run --project product-api/product-api.csproj && \
-	cd -
-.PHONY: run-product-dapr
+.PHONY: publish-all-dockers
+publish-all-dockers: publish-product-docker publish-counter-docker publish-barista-docker publish-kitchen-docker
 
-run-counter-dapr:
-	dapr run \
-    --app-id counter-api \
-    --app-port 5002 \
-    --dapr-http-port 54321 \
-    --resources-path components \
-    --config components/daprConfig.yaml \
-    -- dotnet run --project counter-api/counter-api.csproj && \
-	cd -
-.PHONY: run-counter-dapr
+.PHONY: publish-product-docker
+publish-product-docker:
+	dotnet publish ./product-api/product-api.csproj --os linux --arch x64 /t:PublishContainer -c Release
+	docker tag product-api:latest ghcr.io/thangchung/coffeeshop-dapr-workflow/product-api:${IMAGE_TAG}
+	docker rmi product-api:latest
 
-run-barista-dapr:
-	dapr run \
-    --app-id barista-api \
-    --app-port 5003 \
-    --resources-path components \
-    --config components/daprConfig.yaml \
-    -- dotnet run --project barista-api/barista-api.csproj && \
-	cd -
-.PHONY: run-barista-dapr
+.PHONY: publish-counter-docker
+publish-counter-docker:
+	dotnet publish ./counter-api/counter-api.csproj --os linux --arch x64 /t:PublishContainer -c Release
+	docker tag counter-api:latest ghcr.io/thangchung/coffeeshop-dapr-workflow/counter-api:${IMAGE_TAG}
+	docker rmi counter-api:latest
 
-run-kitchen-dapr:
-	dapr run \
-    --app-id kitchen-api \
-    --app-port 5004 \
-    --resources-path components \
-    --config components/daprConfig.yaml \
-    -- dotnet run --project kitchen-api/kitchen-api.csproj && \
-	cd -
-.PHONY: run-kitchen-dapr
+.PHONY: publish-barista-docker
+publish-barista-docker:
+	dotnet publish ./barista-api/barista-api.csproj --os linux --arch x64 /t:PublishContainer -c Release
+	docker tag barista-api:latest ghcr.io/thangchung/coffeeshop-dapr-workflow/barista-api:${IMAGE_TAG}
+	docker rmi barista-api:latest
+
+.PHONY: publish-kitchen-docker
+publish-kitchen-docker:
+	dotnet publish ./kitchen-api/kitchen-api.csproj --os linux --arch x64 /t:PublishContainer -c Release
+	docker tag kitchen-api:latest ghcr.io/thangchung/coffeeshop-dapr-workflow/kitchen-api:${IMAGE_TAG}
+	docker rmi kitchen-api:latest
