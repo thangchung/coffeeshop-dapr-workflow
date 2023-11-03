@@ -11,7 +11,7 @@ resource demo 'Applications.Core/containers@2023-10-01-preview' = {
   properties: {
     application: application
     container: {
-      image: 'ghcr.io/radius-project/tutorial/webapp:edge'
+      image: 'radius.azurecr.io/samples/demo:latest'
       ports: {
         web: {
           containerPort: 3000
@@ -38,8 +38,17 @@ resource stateStore 'Applications.Dapr/stateStores@2023-10-01-preview' = {
   }
 }
 
-resource pubsubBroker 'Applications.Dapr/pubsubBrokers@2023-10-01-preview' = {
-  name: 'pubsub'
+resource baristapubsubBroker 'Applications.Dapr/pubsubBrokers@2023-10-01-preview' = {
+  name: 'baristapubsub'
+  properties: {
+    // Provision Redis Dapr state store automatically via the default Radius Recipe
+    environment: environment
+    application: application
+  }
+}
+
+resource kitchenpubsubBroker 'Applications.Dapr/pubsubBrokers@2023-10-01-preview' = {
+  name: 'kitchenpubsub'
   properties: {
     // Provision Redis Dapr state store automatically via the default Radius Recipe
     environment: environment

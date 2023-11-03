@@ -8,6 +8,8 @@ using CounterApi.Infrastructure.Gateways;
 using CounterApi.UseCases;
 using CounterApi.Workflows;
 using CounterApi.Extensions;
+using MediatR;
+using CounterApi.Domain.Messages;
 
 var builder = WebApplication.CreateBuilder(args);
 

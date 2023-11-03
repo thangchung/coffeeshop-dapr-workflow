@@ -19,7 +19,7 @@ services:
       - coffeeshop-network
 
   product-api-dapr:
-    image: "daprio/daprd:1.11.2"
+    image: "daprio/daprd:1.12.1-rc.1"
     command: ["./daprd",
      "-app-id", "product-api",
      "-app-port", "5001",
@@ -52,7 +52,7 @@ services:
     networks:
       - coffeeshop-network
   counter-api-dapr:
-    image: "daprio/daprd:1.11.2"
+    image: "daprio/daprd:1.12.1-rc.1"
     command: ["./daprd",
      "-app-id", "counter-api",
      "-app-port", "5002",
@@ -83,7 +83,7 @@ services:
       - coffeeshop-network
 
   barista-api-dapr:
-    image: "daprio/daprd:1.11.2"
+    image: "daprio/daprd:1.12.1-rc.1"
     command: ["./daprd",
      "-app-id", "barista-api",
      "-app-port", "5003",
@@ -113,7 +113,7 @@ services:
       - coffeeshop-network
 
   kitchen-api-dapr:
-    image: "daprio/daprd:1.11.2"
+    image: "daprio/daprd:1.12.1-rc.1"
     command: ["./daprd",
      "-app-id", "kitchen-api",
      "-app-port", "5004",
@@ -132,7 +132,7 @@ services:
   # Dapr placement service
   ############################
   placement:
-    image: "daprio/dapr:1.11.2"
+    image: "daprio/dapr:1.12.1-rc.1"
     command: ["./placement", "-port", "50006"]
     ports:
       - "50006:50006"

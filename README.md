@@ -56,6 +56,51 @@ graph TB
 make publish-all-dockers
 ```
 
+Notes:
+
+```sh
+#.env
+IMAGE_TAG=0.2.0
+DAPR_URL=http://localhost:3500
+```
+
+## Radius
+
+```sh
+> kubectl get no
+NAME                       STATUS   ROLES                  AGE   VERSION
+k3d-k3s-default-server-0   Ready    control-plane,master   49m   v1.27.4+k3s1
+```
+
+```sh
+> rad install kubernetes
+Installing Radius version v0.26.9 to namespace: radius-system...
+```
+
+```sh
+# in case, we want a clean version
+> k3d cluster delete k3d-k3s-default
+> k3d cluster create k3d-k3s-default
+```
+
+```sh
+> rad init
+```
+
+```sh
+# for testing only
+> dapr init -k
+```
+
+```sh
+> rad run app.bicep -g default -e default 
+```
+
+```sh
+# clean up
+> rad app delete coffeeshop-dapr-workflow
+```
+
 ## Refs
 
 - https://github.com/davidfowl/TodoApi/blob/davidfowl/net8/README.md

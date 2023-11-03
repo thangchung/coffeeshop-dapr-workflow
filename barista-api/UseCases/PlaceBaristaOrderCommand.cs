@@ -5,11 +5,8 @@ using BaristaApi.Domain.Messages;
 using BaristaApi.Domain.SharedKernel;
 
 using Dapr.Client;
-
 using FluentValidation;
-
 using MediatR;
-
 using Newtonsoft.Json;
 
 namespace BaristaApi.UseCases;
@@ -18,10 +15,20 @@ public static class OrderOrderedRouteMapper
 {
     public static IEndpointRouteBuilder MapOrderUpApiRoutes(this IEndpointRouteBuilder builder)
     {
+        builder.MapSubscribeHandler();
+
+        var baristaOrderedTopic = new Dapr.TopicOptions
+        {
+            PubsubName = "baristapubsub",
+            Name = "baristaordered",
+            DeadLetterTopic = "baristaorderedDeadLetterTopic"
+        };
+        
         builder.MapPost("/dapr_subscribe_BaristaOrdered", async (BaristaOrderPlaced @event, ISender sender) =>
             await sender.Send(new PlaceBaristaOrderCommand(
                     @event.OrderId,
-                    @event.ItemLines)));
+                    @event.ItemLines)))
+                .WithTopic(baristaOrderedTopic);
 
         return builder;
     }

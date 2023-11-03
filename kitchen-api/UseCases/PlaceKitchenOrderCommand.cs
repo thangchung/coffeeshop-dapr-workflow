@@ -15,10 +15,20 @@ public static class OrderOrderedRouteMapper
 {
     public static IEndpointRouteBuilder MapOrderUpApiRoutes(this IEndpointRouteBuilder builder)
     {
+        builder.MapSubscribeHandler();
+
+        var kitchenOrderedTopic = new Dapr.TopicOptions
+        {
+            PubsubName = "kitchenpubsub",
+            Name = "kitchenordered",
+            DeadLetterTopic = "kitchenorderedDeadLetterTopic"
+        };
+
         builder.MapPost("/dapr_subscribe_KitchenOrdered", async (KitchenOrderPlaced @event, ISender sender) =>
             await sender.Send(new PlaceKitchenOrderCommand(
                     @event.OrderId,
-                    @event.ItemLines)));
+                    @event.ItemLines)))
+                .WithTopic(kitchenOrderedTopic);
 
         return builder;
     }

@@ -12,16 +12,27 @@ public static class OrderUpRouteMapper
 {
     public static IEndpointRouteBuilder MapOrderUpApiRoutes(this IEndpointRouteBuilder builder)
     {
+        builder.MapSubscribeHandler();
+
+        var orderUpTopic = new Dapr.TopicOptions
+        {
+            PubsubName = "orderuppubsub",
+            Name = "orderup",
+            DeadLetterTopic = "orderupDeadLetterTopic"
+        };
+
         builder.MapPost("/dapr_subscribe_BaristaOrderUpdated", async (BaristaOrderUpdated @event, ISender sender) =>
             await sender.Send(new OrderUpdatedCommand(
                     @event.OrderId,
-                    @event.ItemLines)));
+                    @event.ItemLines)))
+                .WithTopic(orderUpTopic);
 
         builder.MapPost("/dapr_subscribe_KitchenOrderUpdated", async (KitchenOrderUpdated @event, ISender sender) =>
             await sender.Send(new OrderUpdatedCommand(
                     @event.OrderId,
                     @event.ItemLines,
-                    IsBarista: false)));
+                    IsBarista: false)))
+                .WithTopic(orderUpTopic);
 
         return builder;
     }
