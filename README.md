@@ -90,10 +90,11 @@ Installing Radius version v0.26.9 to namespace: radius-system...
 ```sh
 # for testing only
 > dapr init -k
+# dapr init --runtime-version 1.11.0 -k
 ```
 
 ```sh
-> rad run app.bicep -g default -e default 
+> rad run app.bicep
 ```
 
 ```sh

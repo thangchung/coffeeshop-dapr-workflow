@@ -6,27 +6,49 @@ param environment string
 @description('The ID of your Radius Application. Automatically injected by the rad CLI.')
 param application string
 
-resource demo 'Applications.Core/containers@2023-10-01-preview' = {
-  name: 'demo'
-  properties: {
-    application: application
-    container: {
-      image: 'radius.azurecr.io/samples/demo:latest'
-      ports: {
-        web: {
-          containerPort: 3000
-        }
-      }
-    }
-    extensions: [
-      {
-        kind: 'daprSidecar'
-        appId: 'demo'
-        appPort: 3000
-      }
-    ]
+var imageVersion = '0.1.0'
+
+// HTTP Routes
+module httpRoutes 'iac/infra/http-routes.bicep' = {
+  name: '${deployment().name}-http-routes'
+  params: {
+    appId: application
   }
 }
+
+module productApi 'iac/apps/product-api.bicep' = {
+  name: '${deployment().name}-product-api'
+  params: {
+    appId: application
+    apiRouteName: httpRoutes.outputs.productApiRouteName
+    daprStateStoreName: stateStore.name
+    daprBaristaPubSubBrokerName: baristapubsubBroker.name
+    daprKitchenPubSubBrokerName: kitchenpubsubBroker.name
+    imageVersion: imageVersion
+  }
+}
+
+// resource demo 'Applications.Core/containers@2023-10-01-preview' = {
+//   name: 'demo'
+//   properties: {
+//     application: application
+//     container: {
+//       image: 'radius.azurecr.io/samples/demo:latest'
+//       ports: {
+//         web: {
+//           containerPort: 3000
+//         }
+//       }
+//     }
+//     extensions: [
+//       {
+//         kind: 'daprSidecar'
+//         appId: 'demo'
+//         appPort: 3000
+//       }
+//     ]
+//   }
+// }
 
 // The Dapr state store that is connected to the backend container
 resource stateStore 'Applications.Dapr/stateStores@2023-10-01-preview' = {
