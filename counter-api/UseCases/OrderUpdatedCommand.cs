@@ -14,10 +14,17 @@ public static class OrderUpRouteMapper
     {
         builder.MapSubscribeHandler();
 
-        var orderUpTopic = new Dapr.TopicOptions
+        var baristaOrderUpTopic = new Dapr.TopicOptions
         {
-            PubsubName = "orderuppubsub",
-            Name = "orderup",
+            PubsubName = "baristapubsub",
+            Name = "baristaorderupdated",
+            DeadLetterTopic = "orderupDeadLetterTopic"
+        };
+
+        var kitchenOrderUpTopic = new Dapr.TopicOptions
+        {
+            PubsubName = "kitchenpubsub",
+            Name = "kitchenorderupdated",
             DeadLetterTopic = "orderupDeadLetterTopic"
         };
 
@@ -25,14 +32,14 @@ public static class OrderUpRouteMapper
             await sender.Send(new OrderUpdatedCommand(
                     @event.OrderId,
                     @event.ItemLines)))
-                .WithTopic(orderUpTopic);
+                .WithTopic(baristaOrderUpTopic);
 
         builder.MapPost("/dapr_subscribe_KitchenOrderUpdated", async (KitchenOrderUpdated @event, ISender sender) =>
             await sender.Send(new OrderUpdatedCommand(
                     @event.OrderId,
                     @event.ItemLines,
                     IsBarista: false)))
-                .WithTopic(orderUpTopic);
+                .WithTopic(kitchenOrderUpTopic);
 
         return builder;
     }

@@ -11,6 +11,6 @@ spec:
     value: localhost:6379
   - name: redisPassword
     value: ""
-scopes:
-  - barista-api
-  - counter-api
+# scopes:
+#   - barista-api
+#   - counter-api

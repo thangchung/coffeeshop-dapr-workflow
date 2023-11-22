@@ -12,7 +12,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.AddOpenTelemetry();
+builder.AddOpenTelemetry();
 
 var app = builder.Build();
 

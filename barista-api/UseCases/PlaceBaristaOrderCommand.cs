@@ -20,7 +20,7 @@ public static class OrderOrderedRouteMapper
         var baristaOrderedTopic = new Dapr.TopicOptions
         {
             PubsubName = "baristapubsub",
-            Name = "baristaordered",
+            Name = "baristaorderplaced",
             DeadLetterTopic = "baristaorderedDeadLetterTopic"
         };
         

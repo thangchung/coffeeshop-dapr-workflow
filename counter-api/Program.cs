@@ -44,7 +44,7 @@ if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DAPR_GRPC_PORT")))
     Environment.SetEnvironmentVariable("DAPR_GRPC_PORT", "50001");
 }
 
-//builder.AddOpenTelemetry();
+builder.AddOpenTelemetry();
 
 var app = builder.Build();
 

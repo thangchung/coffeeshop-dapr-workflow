@@ -1,0 +1,59 @@
+version: 1
+common: 
+    resourcesPath: ./components
+    env: 
+     DEBUG: false
+apps:
+  - appID: productapi
+    appDirPath: ./product-api/
+    # resourcesPath: ./components/
+    daprHTTPPort: 3501
+    appChannelAddress: 127.0.0.1 
+    appProtocol: http
+    appPort: 5001
+    env:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5001
+      ApplicationName: "product-api"
+    command: ["dotnet", "run", "product-api.csproj"]
+  - appID: counterapi
+    appDirPath: ./counter-api/
+    # resourcesPath: ./.components/
+    daprHTTPPort: 3502
+    appChannelAddress: 127.0.0.1 
+    appProtocol: http
+    appPort: 5002
+    daprGRPCPort: 4001
+    logLevel: debug
+    env:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5002
+      ApplicationName: "counter-api"
+      ProductCatalogAppDaprName: productapi
+      DAPR_GRPC_PORT: 4001
+    command: ["dotnet", "run", "counter-api.csproj"]
+  - appID: baristaapi
+    appDirPath: ./barista-api/
+    # resourcesPath: ./components/
+    daprHTTPPort: 3503
+    appChannelAddress: 127.0.0.1
+    appProtocol: http
+    appPort: 5003
+    env:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5003
+      ApplicationName: "barista-api"
+    command: ["dotnet", "run", "barista-api.csproj"]
+  - appID: kitchenapi
+    appDirPath: ./kitchen-api/
+    # resourcesPath: ./components/
+    daprHTTPPort: 3504
+    appChannelAddress: 127.0.0.1
+    appProtocol: http
+    appPort: 5004
+    env:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5004
+      ApplicationName: "kitchen-api"
+    command: ["dotnet", "run", "kitchen-api.csproj"]
+    

@@ -19,7 +19,7 @@ builder.Services.AddSingleton(new JsonSerializerOptions()
     PropertyNameCaseInsensitive = true,
 });
 
-//builder.AddOpenTelemetry();
+builder.AddOpenTelemetry();
 
 var app = builder.Build();
 

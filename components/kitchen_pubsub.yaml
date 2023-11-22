@@ -11,6 +11,6 @@ spec:
     value: localhost:6379
   - name: redisPassword
     value: ""
-scopes:
-  - kitchen-api
-  - counter-api
+# scopes:
+#   - kitchen-api
+#   - counter-api

@@ -10,6 +10,6 @@ while (! kubectl cluster-info ); do
 done
 
 ## Install Dapr and init
-wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash -s 1.11.0
+wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 dapr uninstall # clean if needed
 dapr init -k

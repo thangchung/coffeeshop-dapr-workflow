@@ -71,17 +71,17 @@ resource productApi 'Applications.Core/containers@2023-10-01-preview' = {
         appPort: 80
       }
     ]
-    // connections: {
-    //   baristapubsubBroker: {
-    //     source: baristapubsubBroker.id
-    //   }
-    //   kitchenpubsubBroker: {
-    //     source: kitchenpubsubBroker.id
-    //   }
-    //   daprStateStore: {
-    //     source: stateStore.id
-    //   }
-    // }
+    connections: {
+      baristapubsubBroker: {
+        source: baristapubsubBroker.id
+      }
+      kitchenpubsubBroker: {
+        source: kitchenpubsubBroker.id
+      }
+      daprStateStore: {
+        source: stateStore.id
+      }
+    }
   }
 }
 

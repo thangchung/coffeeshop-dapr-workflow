@@ -12,7 +12,7 @@ spec:
     value: ""
   - name: actorStateStore
     value: "true"
-scopes:
-  - barista-api
-  - kitchen-api
-  - counter-api
+# scopes:
+#   - barista-api
+#   - kitchen-api
+#   - counter-api

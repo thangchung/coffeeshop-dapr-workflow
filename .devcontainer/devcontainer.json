@@ -1,6 +1,6 @@
 {
 	"name": "Radius Dev Container",
-	"image": "mcr.microsoft.com/dotnet/sdk:8.0.100-rc.2-jammy",
+	"image": "mcr.microsoft.com/dotnet/sdk:8.0.100-jammy",
 	"workspaceFolder": "/workspaces/coffeeshop-dapr-workflow",
 	"onCreateCommand": "bash ./.devcontainer/on-create.sh",
 	"postCreateCommand": "bash ./.devcontainer/post-create.sh",
@@ -10,11 +10,11 @@
 	],
 	// Features to add to the dev container. More info: https://containers.dev/features
 	"features": {
-	  "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-	  "ghcr.io/devcontainers/features/azure-cli:1": {},
-	  "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
-	  "ghcr.io/rio/features/k3d:1": {},
-	  "ghcr.io/devcontainers/features/common-utils:2": {
+	  	"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+	  	"ghcr.io/devcontainers/features/azure-cli:1": {},
+	  	"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+	  	"ghcr.io/rio/features/k3d:1": {},
+	  	"ghcr.io/devcontainers/features/common-utils:2": {
 		"configureZshAsDefaultShell": true
 	  }
 	},

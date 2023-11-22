@@ -3,6 +3,8 @@ kind: Configuration
 metadata:
   name: daprConfig
 spec:
+  mtls:
+    enabled: false
   tracing:
     samplingRate: "1"
     zipkin:

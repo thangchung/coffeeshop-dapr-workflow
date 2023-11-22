@@ -1,13 +1,26 @@
-﻿{
+{
   "profiles": {
     "http": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
+      "workingDirectory": "V:\\home\\thangchung\\gh_projects\\coffeeshop-dapr-workflow",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5001"
+    },
+    "WSL": {
+      "commandName": "Project",
+      "workingDirectory": "\\\\wsl.localhost\\Ubuntu\\home\\thangchung\\gh_projects\\coffeeshop-dapr-workflow\\product-api",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5001",
+      "remoteDebugEnabled": true,
+      "nativeDebugging": true
     }
   }
 }

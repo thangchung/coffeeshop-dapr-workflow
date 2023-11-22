@@ -11,6 +11,7 @@ services:
       <<: *common-variables
       ASPNETCORE_URLS: http://+:5001
       ApplicationName: "product-api"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://zipkin:9411/api/v2/spans
     ports:
       - "5001:5001"
     pull_policy: if_not_present
@@ -19,7 +20,7 @@ services:
       - coffeeshop-network
 
   product-api-dapr:
-    image: "daprio/daprd:1.12.1-rc.1"
+    image: "ghcr.io/dapr/daprd:1.12.2"
     command: ["./daprd",
      "-app-id", "product-api",
      "-app-port", "5001",
@@ -43,6 +44,7 @@ services:
       ApplicationName: "counter-api"
       ProductCatalogAppDaprName: product-api
       DAPR_GRPC_PORT: 4001
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://zipkin:9411/api/v2/spans
     ports:
       - "5002:5002"
     depends_on:
@@ -52,7 +54,7 @@ services:
     networks:
       - coffeeshop-network
   counter-api-dapr:
-    image: "daprio/daprd:1.12.1-rc.1"
+    image: "ghcr.io/dapr/daprd:1.12.2"
     command: ["./daprd",
      "-app-id", "counter-api",
      "-app-port", "5002",
@@ -75,6 +77,7 @@ services:
       <<: *common-variables
       ASPNETCORE_URLS: http://+:5003
       ApplicationName: "barista-api"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://zipkin:9411/api/v2/spans
     ports:
       - "5003:5003"
     pull_policy: if_not_present
@@ -83,7 +86,7 @@ services:
       - coffeeshop-network
 
   barista-api-dapr:
-    image: "daprio/daprd:1.12.1-rc.1"
+    image: "ghcr.io/dapr/daprd:1.12.2"
     command: ["./daprd",
      "-app-id", "barista-api",
      "-app-port", "5003",
@@ -105,6 +108,7 @@ services:
       <<: *common-variables
       ASPNETCORE_URLS: http://+:5004
       ApplicationName: "kitchen-api"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://zipkin:9411/api/v2/spans
     ports:
       - "5004:5004"
     pull_policy: if_not_present
@@ -113,7 +117,7 @@ services:
       - coffeeshop-network
 
   kitchen-api-dapr:
-    image: "daprio/daprd:1.12.1-rc.1"
+    image: "ghcr.io/dapr/daprd:1.12.2"
     command: ["./daprd",
      "-app-id", "kitchen-api",
      "-app-port", "5004",
@@ -132,7 +136,7 @@ services:
   # Dapr placement service
   ############################
   placement:
-    image: "daprio/dapr:1.12.1-rc.1"
+    image: "ghcr.io/dapr/dapr:1.12.2"
     command: ["./placement", "-port", "50006"]
     ports:
       - "50006:50006"
