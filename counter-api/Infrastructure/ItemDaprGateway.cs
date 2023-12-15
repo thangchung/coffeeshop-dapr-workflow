@@ -7,6 +7,8 @@ namespace CounterApi.Infrastructure.Gateways;
 
 public class ItemDaprGateway(DaprClient daprClient, IConfiguration config, ILogger<ItemDaprGateway> logger) : IItemGateway
 {
+    // work-around with this: https://github.com/dapr/dotnet-sdk/issues/773#issuecomment-1272369008
+    // https://github.com/dapr/quickstarts/issues/650
     public async Task<IEnumerable<ItemDto>> GetItemsByType(ItemType[] itemTypes)
     {
         logger.LogInformation("Start to call GetItemsByIdsAsync in Product Api");
