@@ -64,6 +64,13 @@ IMAGE_TAG=0.2.0
 DAPR_URL=http://localhost:3500
 ```
 
+## Aspire
+
+```sh
+> dotnet run --project app-host/app-host.csproj
+# http://localhost:5019
+```
+
 ## Radius
 
 ```sh

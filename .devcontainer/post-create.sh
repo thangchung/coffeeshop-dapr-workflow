@@ -10,6 +10,10 @@ while (! kubectl cluster-info ); do
 done
 
 ## Install Dapr and init
-wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
-dapr uninstall # clean if needed
-dapr init -k
+wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash -s 1.12.0
+dapr uninstall --all # clean if needed
+dapr init --runtime-version 1.12.0 # on local
+dapr init -k --runtime-version 1.12.0 # on k8s
+
+## dotnet
+dotnet restore

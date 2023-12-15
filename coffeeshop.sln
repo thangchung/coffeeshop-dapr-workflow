@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kitchen-api", "kitchen-api\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "product-api", "product-api\product-api.csproj", "{8BC6136D-1D36-4BA3-B0A7-85BB2CFD7DBF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "service-defaults", "service-defaults\service-defaults.csproj", "{B198DA95-932E-4854-9D10-D0C9EC28361A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "app-host", "app-host\app-host.csproj", "{805BF26D-6BCE-4A06-95DB-C71AA2896FE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,13 @@ Global
 		{8BC6136D-1D36-4BA3-B0A7-85BB2CFD7DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BC6136D-1D36-4BA3-B0A7-85BB2CFD7DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BC6136D-1D36-4BA3-B0A7-85BB2CFD7DBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B198DA95-932E-4854-9D10-D0C9EC28361A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B198DA95-932E-4854-9D10-D0C9EC28361A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B198DA95-932E-4854-9D10-D0C9EC28361A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B198DA95-932E-4854-9D10-D0C9EC28361A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{805BF26D-6BCE-4A06-95DB-C71AA2896FE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{805BF26D-6BCE-4A06-95DB-C71AA2896FE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{805BF26D-6BCE-4A06-95DB-C71AA2896FE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{805BF26D-6BCE-4A06-95DB-C71AA2896FE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

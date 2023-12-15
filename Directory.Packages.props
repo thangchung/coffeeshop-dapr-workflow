@@ -1,7 +1,9 @@
 <Project>
+
     <PropertyGroup>
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     </PropertyGroup>
+
     <ItemGroup>
         <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0"/>
         <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" PrivateAssets="all"/>
@@ -15,16 +17,19 @@
         <PackageVersion Include="Dapr.AspNetCore" Version="1.12.0"/>
         <PackageVersion Include="Dapr.Workflow" Version="1.12.0"/>
     </ItemGroup>
+
     <ItemGroup>
-        <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.7.0-alpha.1"/>
-        <!-- <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol.Logs" Version="1.4.0-rc.3"/> -->
-        <PackageVersion Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.7.0-alpha.1"/>
-        <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.7.0-alpha.1"/>
-        <PackageVersion Include="OpenTelemetry.Instrumentation.EventCounters" Version="1.5.1-alpha.1"/>
-        <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.6.0-beta.3"/>
-        <PackageVersion Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.0.0-beta.8"/>
-        <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.6.0-beta.3"/>
-        <PackageVersion Include="OpenTelemetry.Instrumentation.Process" Version="0.5.0-beta.3"/>
-        <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.5.1"/>
+        <PackageVersion Include="Aspire.Hosting" Version="8.0.0-preview.3.23614.7" />
+        <PackageVersion Include="Aspire.Hosting.Dapr" Version="8.0.0-preview.3.23614.7" />
+
+        <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="8.0.0" />
+        <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="8.0.0-preview.3.23614.7" />
+        <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.7.0-alpha.1" />
+        <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.7.0-alpha.1" />
+        <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.6.0-beta.2" />
+        <PackageVersion Include="OpenTelemetry.Instrumentation.GrpcNetClient" Version="1.6.0-beta.2" />
+        <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.6.0-beta.2" />
+        <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.5.1" />
     </ItemGroup>
+
 </Project>

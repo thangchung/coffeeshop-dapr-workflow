@@ -3,19 +3,10 @@
     "http": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Test"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5002"
-    },
-    "WSL": {
-      "commandName": "WSL2",
-      "launchUrl": "http://localhost:5002",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "http://localhost:5002"
-      },
-      "distributionName": ""
     }
   }
 }

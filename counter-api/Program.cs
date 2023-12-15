@@ -7,12 +7,16 @@ using CounterApi.Domain;
 using CounterApi.Infrastructure.Gateways;
 using CounterApi.UseCases;
 using CounterApi.Workflows;
-using CounterApi.Extensions;
 using MediatR;
 using CounterApi.Domain.Messages;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
+builder.Services.AddProblemDetails();
+
+builder.Services.AddDaprWorkflowClient();
 builder.Services.AddDaprWorkflow(options =>
 {
     options.RegisterWorkflow<PlaceOrderWorkflow>();
@@ -44,9 +48,11 @@ if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DAPR_GRPC_PORT")))
     Environment.SetEnvironmentVariable("DAPR_GRPC_PORT", "50001");
 }
 
-builder.AddOpenTelemetry();
+// builder.AddOpenTelemetry();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
@@ -57,15 +63,12 @@ if (app.Environment.IsDevelopment())
 app.UseRouting();
 app.UseCloudEvents();
 
+app.MapDefaultEndpoints();
+
 app.Map("/", () => Results.Redirect("/swagger"));
 
 _ = app.MapOrderInApiRoutes()
     .MapOrderUpApiRoutes()
     .MapOrderFulfillmentApiRoutes();
-
-// Configure the prometheus endpoint for scraping metrics
-// app.MapPrometheusScrapingEndpoint();
-// NOTE: This should only be exposed on an internal port!
-// .RequireHost("*:9100");
 
 app.Run();

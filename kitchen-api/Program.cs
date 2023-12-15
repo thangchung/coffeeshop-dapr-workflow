@@ -1,10 +1,13 @@
 using System.Text.Json;
 using FluentValidation;
 
-using KitchenApi.Extensions;
 using KitchenApi.UseCases;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
+
+builder.Services.AddProblemDetails();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
@@ -20,9 +23,11 @@ builder.Services.AddSingleton(new JsonSerializerOptions()
     PropertyNameCaseInsensitive = true,
 });
 
-builder.AddOpenTelemetry();
+// builder.AddOpenTelemetry();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
@@ -32,6 +37,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 app.UseCloudEvents();
+
+app.MapDefaultEndpoints();
 
 app.Map("/", () => Results.Redirect("/swagger"));
 
